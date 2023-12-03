@@ -34,12 +34,22 @@
 	  <None Update="Day02\DayTwoTestInputA.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Day03\DayThreeInput.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Day03\DayThreeTestInputA.txt">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
     <None Update="OldDay01\OldDayOneInput.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
     <None Update="OldDay01\OldDayOneTestInputA.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Day03\" />
   </ItemGroup>
   
 </Project>
