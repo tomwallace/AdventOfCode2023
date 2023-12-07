@@ -8,7 +8,7 @@ public class DayFiveTests
     public void SumPartNumbers()
     {
         var filePath = @"Day05\DayFiveTestInputA.txt";
-        var sut = new FarmingPlan(filePath, false);
+        var sut = new FarmingPlan(filePath);
         var result = sut.TransformSeedThroughMaps(79);
 
         Assert.Equal(82, result);
@@ -18,18 +18,18 @@ public class DayFiveTests
     public void FindLowestSeedAfterTransforms()
     {
         var filePath = @"Day05\DayFiveTestInputA.txt";
-        var sut = new FarmingPlan(filePath, false);
+        var sut = new FarmingPlan(filePath);
         var result = sut.FindLowestSeedAfterTransforms();
 
         Assert.Equal(35, result);
     }
 
     [Fact]
-    public void FindLowestSeedAfterTransforms_SeedRanges()
+    public void FindLowestLocationAfterTransforms()
     {
         var filePath = @"Day05\DayFiveTestInputA.txt";
-        var sut = new FarmingPlan(filePath, true);
-        var result = sut.FindLowestSeedAfterTransforms();
+        var sut = new FarmingPlan(filePath);
+        var result = sut.FindLowestLocationAfterTransforms();
 
         Assert.Equal(46, result);
     }
@@ -43,16 +43,12 @@ public class DayFiveTests
         Assert.Equal("165788812", result);
     }
 
-    /*
-    // TODO: getting out of memory exception - STILL
-    // TODO: Need to look at how the ranges might work - as caching not working
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayFive();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("1928058", result);
     }
-    */
 }
