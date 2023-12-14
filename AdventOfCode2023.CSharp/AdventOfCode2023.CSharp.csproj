@@ -100,17 +100,23 @@
 	  <None Update="Day11\DayElevenTestInputA.txt">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	  <None Update="Day12\DayTwelveInput.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Day12\DayTwelveTestInputA.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Day13\DayThirteenInput.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Day13\DayThirteenTestInputA.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
     <None Update="OldDay01\OldDayOneInput.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
     <None Update="OldDay01\OldDayOneTestInputA.txt">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Day03\" />
-    <Folder Include="Day10\" />
-  </ItemGroup>
-  
+  </ItemGroup>  
 </Project>
