@@ -1,5 +1,4 @@
 ﻿using AdventOfCode2023.CSharp.Utility;
-using Microsoft.VisualBasic;
 
 namespace AdventOfCode2023.CSharp.Day17;
 
@@ -21,7 +20,7 @@ public class DaySeventeen : IAdventProblemSet
     public string PartA()
     {
         var filePath = @"Day17\DaySeventeenInput.txt";
-        var minLoss = CalculateMinimumHeatLoss(filePath);
+        var minLoss = CalculateMinimumHeatLoss(filePath, 0, 3);
 
         return minLoss.ToString();
     }
@@ -30,138 +29,114 @@ public class DaySeventeen : IAdventProblemSet
     public string PartB()
     {
         var filePath = @"Day17\DaySeventeenInput.txt";
-        //var sumPower = SumPowerOfLeastCubes(filePath);
+        var minLoss = CalculateMinimumHeatLoss(filePath, 4, 10);
 
-        return "";
+        return minLoss.ToString();
     }
 
-    internal int CalculateMinimumHeatLoss(string filePath) {
+    internal int CalculateMinimumHeatLoss(string filePath, int minSteps, int maxSteps) {
         var grid = FileUtility.ParseFileToList(filePath, r => r.ToCharArray().Select(c => int.Parse(c.ToString())).ToList());
-        var minimumHeatLoss = int.MaxValue;
         var visited = new HashSet<string>();
         var queue = new PriorityQueue<MapState, int>();
-        var initialState = new MapState(0, 0);
-        queue.Enqueue(initialState, 0);
+        queue.Enqueue(new MapState(0, 0, MapState.East), 0);
+        queue.Enqueue(new MapState(0, 0, MapState.South), 0);
 
         while (queue.TryDequeue(out var currentState, out var cost)) {
             // End state
-            if (currentState.X == grid[0].Count - 1 && currentState.Y == grid.Count - 1) {
+            if (currentState.X == grid[0].Count - 1 && currentState.Y == grid.Count - 1
+                && currentState.StepsStraight >= minSteps - 1) {
                 return cost;
             }
-
-            foreach(var next in currentState.AvailableSteps()) {
+ 
+            foreach(var next in currentState.AvailableSteps(minSteps)) {
                 // If we are going straight and have already gone 3 steps, skip
-                if (next.Straight && currentState.StepsStraight == 2)
+                var newSteps = next == currentState.Direction ? currentState.StepsStraight + 1 : 0;
+                if (newSteps == maxSteps)
                     continue;
 
+                var x = currentState.X + next.ModX;
+                var y = currentState.Y + next.ModY;
                 // If it would exit the board, skip 
-                if (next.X < 0 || next.X > grid[0].Count -1 || next.Y < 0 || next.Y > grid.Count - 1)
+                if (x < 0 || x > grid[0].Count -1 || y < 0 || y > grid.Count - 1)
                     continue;
                 
-                var heatAdded = grid[next.Y][next.X];                
-                var newState = new MapState(currentState, next, heatAdded);
+                var heatAdded = grid[y][x];                
 
                 // Only add if we have not been there before
-                var key = $"{currentState.X},{currentState.Y},{newState.X},{newState.Y},{newState.StepsStraight}";
-                if (visited.Add(key))
-                    queue.Enqueue(newState, newState.HeatIncurred);
+                var key = $"{currentState.X},{currentState.Y},{x},{y},{newSteps}";
+                if (visited.Add(key)) {
+                    var newState = new MapState(x, y, next, newSteps);
+                    queue.Enqueue(newState, cost + heatAdded);
+                }
             }
-
         };
 
         throw new Exception("Should never get here");
     }
-    
 }
 
 public class MapState {
+
+    public static readonly (int, int) North = (0, -1);
+    
+    public static readonly (int, int) East = (1, 0);
+    
+    public static readonly (int, int) South = (0, 1);
+    
+    public static readonly (int, int) West = (-1, 0);
+
     public int X { get; set; }
 
     public int Y { get; set; }
 
-    public int ModX { get; set; }
-
-    public int ModY { get; set; }
+    public (int ModX, int ModY) Direction { get; set; }
 
     public int StepsStraight { get; set; }
 
-    public int HeatIncurred { get; set; }
-
-    public MapState(int x, int y) {
+    public MapState(int x, int y, (int ModX, int ModY) direction) {
         X = x;
         Y = Y;
-        ModX = 1;
-        ModY = 0;
+        Direction = direction;
         StepsStraight = 1;
-        HeatIncurred = 0;
     }
 
-    public MapState(MapState existing, Next next, int heatInCell) {
-        X = next.X;
-        Y = next.Y;
-        ModX = next.ModX;
-        ModY = next.ModY;
-        StepsStraight = next.Straight ? existing.StepsStraight + 1 : 0;
-        HeatIncurred += existing.HeatIncurred + heatInCell;
-    }
-
-    public List<Next> AvailableSteps() {
-        var nextList = new List<Next>();
-        // Facing North
-        if (ModX == 0 && ModY == -1) {
-            nextList.Add(new Next(X + -1, Y + 0, -1, 0, false));
-            nextList.Add(new Next(X + 0, Y + -1, 0, -1, true));
-            nextList.Add(new Next(X + 1, Y + 0, 1, 0, false));
-        }
-        // Facing East
-        if (ModX == 1 && ModY == 0) {
-            nextList.Add(new Next(X + 0, Y + -1, 0, -1, false));
-            nextList.Add(new Next(X + 1, Y + 0, 1, 0, true));
-            nextList.Add(new Next(X + 0, Y + 1, 0, 1, false));
-        }
-        // Facing South
-        if (ModX == 0 && ModY == 1) {
-            nextList.Add(new Next(X + 1, Y + 0, 1, 0, false));
-            nextList.Add(new Next(X + 0, Y + 1, 0, 1, true));
-            nextList.Add(new Next(X + -1, Y + 0, -1, 0, false));
-        }
-        // Facing West
-        if (ModX == -1 && ModY == 0) {
-            nextList.Add(new Next(X + 0, Y + 1, 0, 1, false));
-            nextList.Add(new Next(X + -1, Y + 0, -1, 0, true));
-            nextList.Add(new Next(X + 0, Y + -1, 0, -1, false));
-        }
-        
-        return nextList;
-    }
-
-    public override string ToString()
-    {
-        return $"{X},{Y},{ModX},{ModY}";
-    }
-}
-
-public class Next {
-    public int X { get; set; }
-
-    public int Y { get; set; }
-
-    public int ModX { get; set; }
-
-    public int ModY { get; set; }
-
-    public bool Straight { get; set; }
-
-    public Next(int x, int y, int modX, int modY, bool straight) {
+    public MapState(int x, int y, (int ModX, int ModY) direction, int stepsStraight) {
         X = x;
         Y = y;
-        ModX = modX;
-        ModY = modY;
-        Straight = straight;
+        Direction = direction;
+        StepsStraight = stepsStraight;
+    }
+
+    public List<(int ModX, int ModY)> AvailableSteps(int minSteps) {
+        if (StepsStraight < minSteps - 1)
+            return new List<(int ModX, int ModY)>() { Direction };
+        
+        var directions = new List<(int ModX, int ModY)>();
+        if (Direction != South)
+        {
+            directions.Add(North);
+        }
+        
+        if (Direction != West)
+        {
+            directions.Add(East);
+        }
+        
+        if (Direction != North)
+        {
+            directions.Add(South);
+        }
+
+        if (Direction != East)
+        {
+            directions.Add(West);
+        }
+        
+        return directions;
     }
 
     public override string ToString()
     {
-        return $"{X},{Y},{ModX},{ModY}";
+        return $"{X},{Y},{Direction.ModX},{Direction.ModY}";
     }
 }

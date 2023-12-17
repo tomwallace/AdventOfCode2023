@@ -14,14 +14,23 @@ public class DaySixteenTests
         Assert.Equal(46, result);
     }
 
-    // 6208 too low
+    [Fact]
+    public void BestBeamLocationCountEnergizedCells()
+    {
+        var filePath = @"Day16\DaySixteenTestInputA.txt";
+        var sut = new DaySixteen();
+        var result = sut.BestBeamLocationCountEnergizedCells(filePath);
+
+        Assert.Equal(51, result);
+    }
+
     [Fact]
     public void PartA_Actual()
     {
         var sut = new DaySixteen();
         var result = sut.PartA();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("7210", result);
     }
 
     [Fact]
@@ -30,6 +39,6 @@ public class DaySixteenTests
         var sut = new DaySixteen();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("7673", result);
     }
 }
