@@ -15,14 +15,23 @@ public class DayTenTests
         Assert.Equal(expected, result);
     }
 
+    [Fact]
+    public void AreaInPipeLoopByTraversal_Narrow()
+    {
+        var sut = new PipeMaze(@"Day10\DayTenTestInputF.txt");
+        var result = sut.AreaInPipeLoopByTraversal();
+
+        Assert.Equal(4, result);
+    }
+
     [Theory]
-    //[InlineData(@"Day10\DayTenTestInputC.txt", 4)]
-    //[InlineData(@"Day10\DayTenTestInputD.txt", 8)]
+    [InlineData(@"Day10\DayTenTestInputC.txt", 4)]
+    [InlineData(@"Day10\DayTenTestInputD.txt", 8)]
     [InlineData(@"Day10\DayTenTestInputE.txt", 10)]
-    public void AreaInPipeLoop(string line, int expected)
+    public void AreaInPipeLoopByTraversal(string line, int expected)
     {
         var sut = new PipeMaze(line);
-        var result = sut.AreaInPipeLoop();
+        var result = sut.AreaInPipeLoopByTraversal();
 
         Assert.Equal(expected, result);
     }
@@ -40,14 +49,13 @@ public class DayTenTests
     */
 
     /*
-    // 502 is too low
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayTen();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("525", result);
     }
     */
 }
