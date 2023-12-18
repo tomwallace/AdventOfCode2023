@@ -38,7 +38,9 @@ public class History {
             reverse[0].Insert(0, 0);
 
             foreach(var pair in reverse.Pairwise()) {
+            #pragma warning disable CS8604 // Possible null reference argument.
                 var newReading = pair.Item2.First() - pair.Item1.First();
+            #pragma warning restore CS8604 // Possible null reference argument.
                 pair.Item2.Insert(0, newReading);
             }
 
@@ -48,7 +50,9 @@ public class History {
         reverse[0].Add(0);
 
         foreach(var pair in reverse.Pairwise()) {
+            #pragma warning disable CS8604 // Possible null reference argument.
             var newReading = pair.Item1.Last() + pair.Item2.Last();
+            #pragma warning restore CS8604 // Possible null reference argument.
             pair.Item2.Add(newReading);
         }
 

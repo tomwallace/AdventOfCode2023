@@ -148,6 +148,7 @@ public class Loop {
         IsValid = true;
     }
 
+    // TODO: Try flood fill mechanism from Day 18
     public int CalculateArea() {
         var area = 0;
         var sortedRows = Points.Select(p => p.Y).Distinct().OrderBy(p => p);

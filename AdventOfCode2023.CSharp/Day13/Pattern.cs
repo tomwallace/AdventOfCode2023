@@ -22,6 +22,8 @@ public class Pattern
 
     public Pattern()
     {
+        Rows = new List<string>();
+        Cols = new List<string>();
         Grid = new List<List<char>>();
         MirrorRow = 0;
         MirrorCol = 0;
