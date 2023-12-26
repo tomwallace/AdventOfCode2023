@@ -7,7 +7,7 @@ public class DayEight : IAdventProblemSet
     /// <inheritdoc />
     public string Description()
     {
-        return "Haunted Wasteland";
+        return "Haunted Wasteland [HARD]";
     }
 
     /// <inheritdoc />

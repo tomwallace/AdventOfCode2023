@@ -9,7 +9,7 @@ public class DayTwelve : IAdventProblemSet
     /// <inheritdoc />
     public string Description()
     {
-        return "Hot Springs";
+        return "Hot Springs [HARD]";
     }
 
     /// <inheritdoc />
