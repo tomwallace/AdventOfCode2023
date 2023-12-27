@@ -7,10 +7,10 @@ public class DayEightTests
     [Theory]
     [InlineData(@"Day08\DayEightTestInputA.txt", 2)]
     [InlineData(@"Day08\DayEightTestInputB.txt", 6)]
-    public void SumIdsPossibleGames(string filePath, int expected)
+    public void StepsToTraverse(string filePath, int expected)
     {
         var sut = new Map(filePath);
-        var result = sut.StepsToTraverse();
+        var result = sut.StepsToTraverse("AAA");
 
         Assert.Equal(expected, result);
     }
@@ -34,14 +34,12 @@ public class DayEightTests
         Assert.Equal("22411", result);
     }
 
-    /* TODO - need to update, as was not finished in 10 min
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayEight();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("11188774513823", result);
     }
-    */
 }

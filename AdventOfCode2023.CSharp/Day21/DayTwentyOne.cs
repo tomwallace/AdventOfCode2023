@@ -9,7 +9,7 @@ public class DayTwentyOne : IAdventProblemSet
     /// <inheritdoc />
     public string Description()
     {
-        return "Step Counter";
+        return "Step Counter [HARD]";
     }
 
     /// <inheritdoc />

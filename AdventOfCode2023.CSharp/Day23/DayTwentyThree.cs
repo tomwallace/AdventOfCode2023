@@ -7,7 +7,7 @@ public class DayTwentyThree : IAdventProblemSet
     /// <inheritdoc />
     public string Description()
     {
-        return "A Long Walk";
+        return "A Long Walk [HARD]";
     }
 
     /// <inheritdoc />
