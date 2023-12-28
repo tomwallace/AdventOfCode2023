@@ -33,13 +33,12 @@ public class DayFourteenTests
         Assert.Equal("111979", result);
     }
 
-    // 106504 too high
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayFourteen();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("102055", result);
     }
 }
