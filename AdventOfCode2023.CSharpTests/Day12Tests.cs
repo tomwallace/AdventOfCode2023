@@ -1,5 +1,4 @@
-﻿using AdventOfCode2023.CSharp.Day08;
-using AdventOfCode2023.CSharp.Day12;
+﻿using AdventOfCode2023.CSharp.Day12;
 
 namespace AdventOfCode2022.CSharp.Tests;
 
@@ -17,21 +16,6 @@ public class DayTwelveTests
         Assert.Equal(expected, result);
     }
 
-    [Theory]
-    [InlineData(".###.##.#... 3,2,1", true)]
-    [InlineData(".###....##.# 3,2,1", true)]
-    [InlineData("#....######..#####. 1,6,5", true)]
-    [InlineData("##...######..#####. 1,6,5", false)]
-    [InlineData("#...### 1,1,3", false)]
-    [InlineData("#.#.### 1,1,3", true)]
-    public void IsLineValid(string line, bool expected)
-    {
-        var sut = new Line(line);
-        var result = sut.IsLineValid(line);
-
-        Assert.Equal(expected, result);
-    }
-
     [Fact]
     public void SumValidArrangements()
     {
@@ -42,10 +26,9 @@ public class DayTwelveTests
         Assert.Equal(21, result);
     }
 
-    // TODO: Runs a long time, need to optimize to trim off branches early
     [Theory]
     [InlineData("???.### 1,1,3", 1)]
-    //[InlineData(".??..??...?##. 1,1,3", 16384)]
+    [InlineData(".??..??...?##. 1,1,3", 16384)]
     public void FindValidCombinations_Folded(string line, long expected)
     {
         var sut = new Line(line, true);
@@ -54,7 +37,6 @@ public class DayTwelveTests
         Assert.Equal(expected, result);
     }
 
-    /*
     [Fact]
     public void SumValidArrangements_Folded()
     {
@@ -64,7 +46,6 @@ public class DayTwelveTests
 
         Assert.Equal(525152, result);
     }
-    */
 
     [Fact]
     public void PartA_Actual()
@@ -81,6 +62,6 @@ public class DayTwelveTests
         var sut = new DayTwelve();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("7732028747925", result);
     }
 }
