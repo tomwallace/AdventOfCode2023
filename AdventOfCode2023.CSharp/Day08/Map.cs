@@ -50,67 +50,6 @@ public class Map
         var counts = startingKeys.Select(s => (long) StepsToTraverse(s)).ToList();;
 
         // Had to look up a forumula to find the first step they would all overlap
-        return LowestCommonMultiple(counts.ToList());
-    }
-
-    private long LowestCommonMultiple(List<long> input)
-    {
-        var queue = new Queue<long>(input.Count * 2);
-
-        foreach (var item in input)
-        {
-            queue.Enqueue(item);
-        }
-        
-        while (true)
-        {
-            long left;
-            
-            long right;
-            
-            if (queue.Count == 2)
-            {
-                left = queue.Dequeue();
-
-                right = queue.Dequeue();
-
-                return left * right / GreatestCommonFactor(left, right);
-            }
-
-            left = queue.Dequeue();
-
-            right = queue.Dequeue();
-
-            var lowestCommonMultiple = left * right / GreatestCommonFactor(left, right);
-
-            queue.Enqueue(lowestCommonMultiple);
-        }
-    }
-
-    private long GreatestCommonFactor(long left, long right)
-    {
-        var gcdExponentOnTwo = BitOperations.TrailingZeroCount(left | right);
-
-        left >>= gcdExponentOnTwo;
-        
-        right >>= gcdExponentOnTwo;
-
-        while (left != right)
-        {
-            if (left < right)
-            {
-                right -= left;
-
-                right >>= BitOperations.TrailingZeroCount(right);
-            }
-            else
-            {
-                left -= right;
-
-                left >>= BitOperations.TrailingZeroCount(left);
-            }
-        }
-
-        return left << gcdExponentOnTwo;
+        return MathUtility.LeastCommonMultiple(counts.ToList());
     }
 }

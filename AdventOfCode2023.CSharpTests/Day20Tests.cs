@@ -33,15 +33,12 @@ public class DayTwentyTests
         Assert.Equal("886347020", result);
     }
 
-    // TODO: Runs much too long.  Must be a short cut
-    /*
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayTwenty();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("233283622908263", result);
     }
-    */
 }
