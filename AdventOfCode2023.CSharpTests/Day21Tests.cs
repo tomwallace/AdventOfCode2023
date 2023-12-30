@@ -18,6 +18,7 @@ public class DayTwentyOneTests
     [InlineData(6, 16)]
     [InlineData(10, 50)]
     [InlineData(50, 1594)]
+    //[InlineData(1000, 668697)]
     public void SumAcceptedPartsRatingNumbers_Infinite(int steps, int expected)
     {
         var filePath = @"Day21\DayTwentyOneTestInputA.txt";
@@ -42,6 +43,6 @@ public class DayTwentyOneTests
         var sut = new DayTwentyOne();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("619407349431167", result);
     }
 }

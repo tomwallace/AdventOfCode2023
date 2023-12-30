@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using System.Numerics;
 using AdventOfCode2023.CSharp.Utility;
 
 namespace AdventOfCode2023.CSharp.Day21;
@@ -31,12 +30,12 @@ public class DayTwentyOne : IAdventProblemSet
     public string PartB()
     {
         var filePath = @"Day21\DayTwentyOneInput.txt";
-        //var sumPower = SumPowerOfLeastCubes(filePath);
+        var count = PartTwo(filePath);
 
-        return "";
+        return count.ToString();
     }
 
-    public int CountVisitedPlots(string filePath, int maxSteps, bool useInfiniteGarden) {
+    internal int CountVisitedPlots(string filePath, int maxSteps, bool useInfiniteGarden) {
         var garden = new Garden(filePath, useInfiniteGarden);
         var visited = new HashSet<(int X, int Y)>() { (garden.Start.X, garden.Start.Y) };
         for (int i = 0; i < maxSteps; i++) {
@@ -52,92 +51,66 @@ public class DayTwentyOne : IAdventProblemSet
         garden.Print(visited);
         return visited.Count();
     }
-}
 
-public class Garden {
-    public List<List<char>> Grid { get; }
+    // I had to go to Reddit for Part B.  My original solution for Part B worked, but took
+    // 233 seconds for 1000 steps and we had to go up to 26501365.  So it was untenable.
+    // The Reddit solutions took two forms, geometric and computational.
+    // This solution, used observation to determine there are two states per tile, and derived
+    // the formulas from that:  https://aoc.csokavar.hu/?day=21
+    internal long PartTwo(string filePath) {
+        // Exploiting some nice properties of the input it reduces to quadratic 
+        // interpolation over 3 points: k * 131 + 65 for k = 0, 1, 2
+        // I used the Newton method.
+        var steps = Steps(ParseMap(filePath)).Take(328).ToArray();
 
-    public (int X, int Y) Start { get; }
+        (decimal x0, decimal y0) = (65, steps[65]);
+        (decimal x1, decimal y1) = (196, steps[196]);
+        (decimal x2, decimal y2) = (327, steps[327]);
 
-    public bool UseInfiniteGarden { get; set; }
+        decimal y01 = (y1 - y0) / (x1 - x0);
+        decimal y12 = (y2 - y1) / (x2 - x1);
+        decimal y012 = (y12 - y01) / (x2 - x0);
 
-    public Garden(string filePath, bool useInfiniteGarden) {
-        Grid = FileUtility.ParseFileToList(filePath, line => line.ToCharArray().ToList());
-        UseInfiniteGarden = useInfiniteGarden;
-        for (int y = 0; y < Grid.Count; y++) {
-            for (int x = 0; x < Grid.Count; x++) {
-                if (Grid[y][x] == 'S') {
-                    Start = (x, y);
-                    return;
+        var n = 26501365;
+        return (long)(y0 + y01 * (n - x0) + y012 * (n - x0) * (n - x1));
+    }
+
+    // walks around and returns the number of available positions at each step
+    private IEnumerable<long> Steps(HashSet<Complex> map) {
+        var positions = new HashSet<Complex> { new Complex(65, 65) };
+        while(true) {
+            yield return positions.Count;
+            positions = Step(map, positions);
+        }
+    }
+    
+    private HashSet<Complex> Step(HashSet<Complex> map, HashSet<Complex> positions) {
+        Complex[] dirs = [1, -1, Complex.ImaginaryOne, -Complex.ImaginaryOne];
+
+        var res = new HashSet<Complex>();
+        foreach (var pos in positions) {
+            foreach (var dir in dirs) {
+                var posT = pos + dir;
+                var tileCol = Mod(posT.Real, 131);
+                var tileRow = Mod(posT.Imaginary, 131);
+                if (map.Contains(new Complex(tileCol, tileRow))) {
+                    res.Add(posT);
                 }
             }
         }
+        return res;
     }
 
-    public bool IsValid(int x, int y) {
-        //if (!UseInfiniteGarden) {
-            if (x < 0 || x > Grid[0].Count - 1 || y < 0 || y > Grid.Count - 1)
-               return false;
-            return Grid[y][x] != '#';
-        //}
-        /*
-        // Use infinite garden
-        if (x == -1) {
-            x = Grid[0].Count - 1;
-        }
-        if (x == Grid[0].Count) {
-            x = 0;
-        }
-        if (y == -1) {
-            y = Grid.Count - 1;
-        }
-        if (y == Grid.Count) {
-            y = 0;
-        }
-        return Grid[y][x] != '#';
-        */
-    }
+    // the double % takes care of negative numbers
+    private double Mod(double n, int m) => ((n % m) + m) % m;
 
-    public List<(int X, int Y)> GetNeighbors(int x, int y) {
-        var mods = new List<(int X, int Y)>() { (0, -1), (1, 0), (0, 1), (-1, 0) };
-        
-        
-        return mods.Select(m => {
-                var localX = x + m.X;
-                var localY = y + m.Y;
-                // TODO: refactor to pull out common code
-                if (UseInfiniteGarden) {
-                    if (localX == -1) {
-                        localX = Grid[0].Count - 1;
-                    }
-                    if (localX == Grid[0].Count) {
-                        localX = 0;
-                    }
-                    if (localY == -1) {
-                        localY = Grid.Count - 1;
-                    }
-                    if (localY == Grid.Count) {
-                        localY = 0;
-                    }
-                }
-                return (localX, localY);
-            }).Where(m => IsValid(m.Item1, m.Item2)).ToList();
-    }
-
-    public void Print(HashSet<(int X, int Y)> visited) {
-        var builder = new StringBuilder();
-        for (int y = 0; y < Grid.Count; y++) {
-            for (int x = 0; x < Grid.Count; x++) {
-                if (visited.Any(v => v.X == x && v.Y == y))
-                    builder.Append("O");
-                else
-                    builder.Append(Grid[y][x]);
-            }
-            Debug.WriteLine(builder.ToString());
-            builder.Clear();
-        }
-
-        Debug.WriteLine("");
-        Debug.WriteLine("");
+    private HashSet<Complex> ParseMap(string filePath) {
+        var lines = FileUtility.ParseFileToList(filePath);
+        return (
+            from irow in Enumerable.Range(0, lines.Count)
+            from icol in Enumerable.Range(0, lines[0].Length)
+            where lines[irow][icol] != '#'
+            select new Complex(icol, irow)
+        ).ToHashSet();
     }
 }
