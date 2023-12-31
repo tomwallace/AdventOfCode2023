@@ -18,8 +18,8 @@ public class DayTwentyThreeTests
     public void FindMostStepsOnHike_NoSlipperySlopes()
     {
         var filePath = @"Day23\DayTwentyThreeTestInputA.txt";
-        var sut = new DayTwentyThree();
-        var result = sut.FindMostStepsOnHike(filePath, false);
+        var sut = new NewAttempt();
+        var result = sut.PartTwo(filePath);
 
         Assert.Equal(154, result);
     }
@@ -33,15 +33,12 @@ public class DayTwentyThreeTests
         Assert.Equal("2238", result);
     }
 
-    // TODO: Ran overnight and still did not resolve.
-    /*
     [Fact]
     public void PartB_Actual()
     {
         var sut = new DayTwentyThree();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("6398", result);
     }
-    */
 }
