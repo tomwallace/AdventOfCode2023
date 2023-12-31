@@ -84,7 +84,7 @@ public class Platform
 
         AsCols = newCols.ToList();
 
-        // Recalc AsRows - TODO: needs work
+        // Recalc AsRows
         AsRows = RotateCounter(AsCols).ToList();
     }
 

@@ -24,7 +24,6 @@ public class Scratchcard {
         if (numberCorrect == 0)
             return 0;
 
-        // TODO: there must be a better way - or a mathmatical equation that would double
         var points = 1;
         for (int i = 0; i < numberCorrect - 1; i++) {
             points = points * 2;

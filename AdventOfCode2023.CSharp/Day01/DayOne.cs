@@ -53,7 +53,6 @@ public class DayOne : IAdventProblemSet
     }
 
 
-    // TODO: Refactor as it is not concise
     internal int ProcessLineAsWords(string line)
     {
         var lowestIndex = 99999;

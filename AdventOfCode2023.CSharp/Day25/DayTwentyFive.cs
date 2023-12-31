@@ -28,7 +28,7 @@ public class DayTwentyFive : IAdventProblemSet
     /// <inheritdoc />
     public string PartB()
     {
-        return "Still need to complete all stars.";
+        return "I have gotten all 50 stars!";
     }
 
     

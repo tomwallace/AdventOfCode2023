@@ -37,7 +37,7 @@ public class DayTenTests
     }
 
     /*
-    // TODO: Optimize as it takes 18 sec for PartA
+    // Optimize as it takes 18 sec for PartA
     [Fact]
     public void PartA_Actual()
     {
