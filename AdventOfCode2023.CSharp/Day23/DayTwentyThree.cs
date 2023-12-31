@@ -35,7 +35,7 @@ public class DayTwentyThree : IAdventProblemSet
 
     // Part B - useSlipperySlopes = false = took too long.
     internal int FindMostStepsOnHike(string filePath, bool useSlipperySlopes) {
-        var map = new Map(filePath, useSlipperySlopes);
+        var map = new TrailMap(filePath, useSlipperySlopes);
         var queue = new PriorityQueue<MapStep, int>();
         queue.Enqueue(new MapStep((1, 0), 0), 0);
         var mostSteps = 0;

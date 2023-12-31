@@ -2,12 +2,12 @@ using AdventOfCode2023.CSharp.Utility;
 
 namespace AdventOfCode2023.CSharp.Day23;
 
-public class Map {
+public class TrailMap {
     public List<List<char>> Grid { get; }
 
     public bool UseSlipperySlopes { get; set; }
 
-    public Map(string filePath, bool useSlipperySlopes) {
+    public TrailMap(string filePath, bool useSlipperySlopes) {
         Grid = FileUtility.ParseFileToList(filePath, line => line.ToCharArray().ToList());
         UseSlipperySlopes = useSlipperySlopes;
     }

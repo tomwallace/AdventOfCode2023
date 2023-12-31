@@ -29,6 +29,6 @@ public class DayTwentyFourTests
         var sut = new DayTwentyFour();
         var result = sut.PartB();
 
-        Assert.Equal("-1", result);
+        Assert.Equal("1025019997186820", result);
     }
 }
